@@ -27,6 +27,9 @@ public class ConfigFactory implements IConfigFactory {
             configProxy = configModel.getConfigProxy();
             configRobots = configuration.getConfigModel().getConfigRobots();
             configServerGame = configProxy.getMaxPriorityConfigServerGame();
+            logback.debug("ServerGame name: " + configServerGame.getName());            logback.debug("ServerGame name" + configServerGame.getName());
+            logback.debug("ServerGame push: " + configServerGame.getPushAddress());
+            logback.debug("ServerGame sub: " + configServerGame.getSubscribeAddress());
         }
         logback.debug("Constructor -- OUT");
     }

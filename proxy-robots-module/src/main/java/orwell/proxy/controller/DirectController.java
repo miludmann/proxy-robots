@@ -11,6 +11,8 @@ import orwell.proxy.robot.IRobot;
 import orwell.proxy.robot.LegoTank;
 import orwell.proxy.robot.RobotFactory;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 /**
@@ -20,10 +22,12 @@ public class DirectController {
     private final static Logger logback = LoggerFactory.getLogger(DirectController.class);
     private final IRobot robot;
     private final GameGUI gameGUI;
+    private final CmdRobot cmdRobot;
 
     public DirectController(final IRobot robot) {
         this.robot = robot;
         this.gameGUI = new GameGUI();
+        this.cmdRobot = new CmdRobot(robot);
     }
 
     public static void main(final String[] args) throws Exception {
@@ -43,6 +47,26 @@ public class DirectController {
     }
 
     private void start() {
+        robot.connect();
+        gameGUI.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                getCmdRobot().commandTyped(e.getKeyChar());
+            }
 
+            @Override
+            public void keyPressed(KeyEvent e) {
+                getCmdRobot().commandPressed(e.getKeyChar());
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                getCmdRobot().commandReleased(e.getKeyChar());
+            }
+        });
+    }
+
+    private CmdRobot getCmdRobot() {
+        return cmdRobot;
     }
 }
