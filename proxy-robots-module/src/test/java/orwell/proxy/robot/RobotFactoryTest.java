@@ -7,8 +7,14 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import orwell.proxy.config.ConfigModel;
+import orwell.proxy.config.Configuration;
 import orwell.proxy.config.elements.ConfigCamera;
+import orwell.proxy.config.elements.ConfigRobots;
 import orwell.proxy.config.elements.ConfigTank;
+
+import javax.xml.bind.JAXBException;
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -68,8 +74,56 @@ public class RobotFactoryTest {
         assertEquals("http://" + IP_TEST + ":" + PORT_TEST, legoTank.getCameraUrl());
     }
 
+    @Test
+    public void testGetRobot_Configuration() throws Exception {
+        // Manually setup the configuration of tank
+        final ConfigTank configTank = new ConfigTank();
+        configTank.setBluetoothID(BT_ID_TEST);
+        configTank.setBluetoothName(BT_NAME_TEST);
+        configTank.setImage(IMAGE_TEST);
+        configTank.setShouldRegister(true);
+        configTank.setTempRoutingID(TEMP_ROUTING_ID_TEST);
+
+        // idem for camera of tank
+        final ConfigCamera configCamera = new ConfigCamera();
+        configCamera.setIp(IP_TEST);
+        configCamera.setPort(PORT_TEST);
+        configTank.setCamera(configCamera);
+
+        final ConfigRobots configRobots = new ConfigRobots();
+        final ArrayList<ConfigTank> configTanks = new ArrayList<>();
+        configTanks.add(configTank);
+        configRobots.setConfigTanks(configTanks);
+
+        final ConfigModel configModel = new ConfigModel();
+        configModel.setConfigRobots(configRobots);
+
+        final ConfigurationTest configurationTest = new ConfigurationTest(configModel);
+
+        // Build a tank from the config
+        final LegoTank legoTank = (LegoTank) robotFactory.getRobot(configurationTest, TEMP_ROUTING_ID_TEST);
+        assertEquals(IMAGE_TEST, legoTank.getImage());
+        assertEquals("http://" + IP_TEST + ":" + PORT_TEST, legoTank.getCameraUrl());
+    }
+
     @After
     public void tearDown() throws Exception {
         logback.debug("<<<< OUT");
+    }
+
+    private class ConfigurationTest extends Configuration {
+        ConfigModel configModel;
+
+        public ConfigurationTest(final ConfigModel configModel) {
+            this.configModel = configModel;
+        }
+
+        @Override
+        protected void populateFromSource(ConfigModel configModel) throws JAXBException {
+        }
+
+        public ConfigModel getConfigModel() {
+            return configModel;
+        }
     }
 }

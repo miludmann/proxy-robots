@@ -35,12 +35,8 @@ public class DirectController {
             System.exit(0);
         }
 
-        final ConfigModel configModel = configuration.getConfigModel();
-        final ConfigRobots configRobots = configModel.getConfigRobots();
-        final ArrayList<IConfigRobot> robots = configRobots.getConfigRobotsToRegister();
-
-        final LegoTank legoTank = (LegoTank) RobotFactory.getRobot(robots.get(0));
-        final DirectController controller = new DirectController(legoTank);
+        final DirectController controller =
+                new DirectController(RobotFactory.getRobot(configuration, "BananaOne"));
         controller.start();
     }
 

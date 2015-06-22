@@ -8,7 +8,6 @@ import orwell.proxy.config.Configuration;
 import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.nio.file.NotDirectoryException;
 
 /**
  * Created by Michaël Ludmann on 6/9/15.
@@ -33,11 +32,10 @@ public class ConfigurationFile extends Configuration {
     }
 
     @Override
-    protected ConfigModel populateFromSource() throws JAXBException {
+    protected void populateFromSource(ConfigModel configModel) throws JAXBException {
         final File file = new File(filePath);
-        final ConfigModel configModel = (ConfigModel) unmarshaller.unmarshal(file);
+        configModel = (ConfigModel) unmarshaller.unmarshal(file);
         setIsPopulated(true);
         logback.info("Configuration loaded from external file: " + filePath);
-        return configModel;
     }
 }

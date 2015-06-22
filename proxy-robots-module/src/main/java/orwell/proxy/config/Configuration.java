@@ -22,7 +22,8 @@ public abstract class Configuration {
         try {
             jc = JAXBContext.newInstance(ConfigModel.class);
             unmarshaller = jc.createUnmarshaller();
-            configModel = populateFromSource();
+            configModel = new ConfigModel();
+            populateFromSource(configModel);
         } catch (final JAXBException e) {
             logback.error("Configuration:populate(): Error in configuration population: "
                     + e);
@@ -38,7 +39,7 @@ public abstract class Configuration {
         this.isPopulated = isPopulated;
     }
 
-    protected abstract ConfigModel populateFromSource() throws JAXBException;
+    protected abstract void populateFromSource(ConfigModel configModel) throws JAXBException;
 
     public ConfigModel getConfigModel() {
         return configModel;

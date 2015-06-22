@@ -2,12 +2,12 @@ package orwell.proxy.robot;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import orwell.proxy.config.elements.ConfigScout;
-import orwell.proxy.config.elements.ConfigTank;
-import orwell.proxy.config.elements.IConfigCamera;
-import orwell.proxy.config.elements.IConfigRobot;
+import orwell.proxy.config.ConfigModel;
+import orwell.proxy.config.Configuration;
+import orwell.proxy.config.elements.*;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 
 /**
  * Created by Michaël Ludmann on 5/21/15.
@@ -27,6 +27,21 @@ public final class RobotFactory {
             return getRobot((ConfigScout) configRobot);
         }
 
+        return null;
+    }
+
+    public static IRobot getRobot(final Configuration configuration, final String tempRoutingId) {
+        final ConfigModel configModel = configuration.getConfigModel();
+        final ConfigRobots configRobots = configModel.getConfigRobots();
+        final ArrayList<IConfigRobot> robots = configRobots.getConfigRobotsToRegister();
+
+        for (final IConfigRobot configRobot : robots) {
+            if (tempRoutingId.equals(configRobot.getTempRoutingID())) {
+                logback.info("Found matching robot in the config: " + tempRoutingId);
+                return getRobot(configRobot);
+            }
+        }
+        logback.info("Not matching robot found in the config: " + tempRoutingId);
         return null;
     }
 
