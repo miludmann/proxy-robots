@@ -11,8 +11,6 @@ import orwell.proxy.robot.IRobot;
 import orwell.proxy.robot.LegoTank;
 import orwell.proxy.robot.RobotFactory;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 /**
@@ -48,22 +46,7 @@ public class DirectController {
 
     private void start() {
         robot.connect();
-        gameGUI.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-                getCmdRobot().commandTyped(e.getKeyChar());
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                getCmdRobot().commandPressed(e.getKeyChar());
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                getCmdRobot().commandReleased(e.getKeyChar());
-            }
-        });
+        gameGUI.addKeyListener(new DirectControlKeyAdapter(getCmdRobot()));
     }
 
     private CmdRobot getCmdRobot() {

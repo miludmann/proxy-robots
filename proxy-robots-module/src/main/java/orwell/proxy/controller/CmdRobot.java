@@ -11,20 +11,39 @@ import orwell.proxy.robot.RobotInputSetVisitor;
  * Created by Michaël Ludmann on 21/06/15.
  */
 public class CmdRobot {
-    public final static Logger logback = LoggerFactory.getLogger(CmdRobot.class);
-
+    private final static Logger logback = LoggerFactory.getLogger(CmdRobot.class);
+    private final static int DEFAULT_SPEED = 75;
     private final IRobot robot;
-    private int speed = 75;
+    private int speed;
 
-    public CmdRobot(IRobot robot) {
+    public CmdRobot(final IRobot robot) {
         this.robot = robot;
+        this.speed = DEFAULT_SPEED;
     }
 
-    public void commandTyped(char keyChar) {
-        if(EnumConnectionState.CONNECTED != robot.getConnectionState())
+    private static Controller.Input getInput(final double left, final double right,
+                                             final boolean weapon1, final boolean weapon2) {
+        final Controller.Input.Builder inputBuilder = Controller.Input.newBuilder();
+
+        final Controller.Input.Fire.Builder fireBuilder = Controller.Input.Fire.newBuilder();
+        fireBuilder.setWeapon1(weapon1);
+        fireBuilder.setWeapon2(weapon2);
+        inputBuilder.setFire(fireBuilder.build());
+
+
+        final Controller.Input.Move.Builder moveBuilder = Controller.Input.Move.newBuilder();
+        moveBuilder.setLeft(left);
+        moveBuilder.setRight(right);
+        inputBuilder.setMove(moveBuilder.build());
+
+        return inputBuilder.build();
+    }
+
+    public void commandTyped(final char keyChar) {
+        if (EnumConnectionState.CONNECTED != robot.getConnectionState())
             return;
 
-        switch(keyChar) {
+        switch (keyChar) {
             case 'w':
                 goForward();
                 break;
@@ -49,7 +68,51 @@ public class CmdRobot {
             case '2':
                 fireWeapon2();
                 break;
+            default:
+                notHandled(keyChar);
+                break;
         }
+    }
+
+    public void commandPressed(final char keyChar) {
+        logback.debug("Command pressed not handled for key: " + keyChar);
+    }
+
+    public void commandReleased(final char keyChar) {
+        if (EnumConnectionState.CONNECTED != robot.getConnectionState())
+            return;
+
+        switch (keyChar) {
+            case 'w':
+                stop();
+                break;
+            case 's':
+                stop();
+                break;
+            case 'a':
+                stop();
+                break;
+            case 'd':
+                stop();
+                break;
+            case '-':
+                stop();
+                break;
+            case '+':
+                stop();
+                break;
+            case '1':
+                break;
+            case '2':
+                break;
+            default:
+                notHandled(keyChar);
+                break;
+        }
+    }
+
+    private void notHandled(final char keyChar) {
+        logback.debug("Key not handled: " + keyChar);
     }
 
     private void fireWeapon2() {
@@ -67,14 +130,14 @@ public class CmdRobot {
     }
 
     private void increaseSpeed() {
-        if(speed < 100) {
+        if (100 > speed) {
             speed++;
             logback.debug("Increased Speed to: " + speed);
         }
     }
 
     private void decreaseSpeed() {
-        if(speed > -100) {
+        if (-100 < speed) {
             speed--;
             logback.debug("Decreased Speed to: " + speed);
         }
@@ -108,63 +171,11 @@ public class CmdRobot {
         logback.debug("Going forward");
     }
 
-    public void commandPressed(char keyChar) {
-    }
-
-    public void commandReleased(char keyChar) {
-        if (EnumConnectionState.CONNECTED != robot.getConnectionState())
-            return;
-
-        switch (keyChar) {
-            case 'w':
-                stop();
-                break;
-            case 's':
-                stop();
-                break;
-            case 'a':
-                stop();
-                break;
-            case 'd':
-                stop();
-                break;
-            case '-':
-                stop();
-                break;
-            case '+':
-                stop();
-                break;
-            case '1':
-                break;
-            case '2':
-                break;
-        }
-    }
-
-
     private void stop() {
         final Controller.Input input = getInput(0, 0, false, false);
         final RobotInputSetVisitor robotInputSetVisitor = new RobotInputSetVisitor(input.toByteArray());
         robot.accept(robotInputSetVisitor);
         logback.debug("Stopping");
 
-    }
-
-    public static Controller.Input getInput(double left, double right,
-                                            boolean weapon1, boolean weapon2) {
-        final Controller.Input.Builder inputBuilder = Controller.Input.newBuilder();
-
-        final Controller.Input.Fire.Builder fireBuilder = Controller.Input.Fire.newBuilder();
-        fireBuilder.setWeapon1(weapon1);
-        fireBuilder.setWeapon2(weapon2);
-        inputBuilder.setFire(fireBuilder.build());
-
-
-        final Controller.Input.Move.Builder moveBuilder = Controller.Input.Move.newBuilder();
-        moveBuilder.setLeft(left);
-        moveBuilder.setRight(right);
-        inputBuilder.setMove(moveBuilder.build());
-
-        return inputBuilder.build();
     }
 }
