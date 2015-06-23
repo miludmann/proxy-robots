@@ -3,15 +3,9 @@ package orwell.proxy.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import orwell.proxy.Cli;
-import orwell.proxy.config.ConfigModel;
 import orwell.proxy.config.Configuration;
-import orwell.proxy.config.elements.ConfigRobots;
-import orwell.proxy.config.elements.IConfigRobot;
 import orwell.proxy.robot.IRobot;
-import orwell.proxy.robot.LegoTank;
 import orwell.proxy.robot.RobotFactory;
-
-import java.util.ArrayList;
 
 /**
  * Created by Michaël Ludmann on 6/18/15.
@@ -20,12 +14,12 @@ public class DirectController {
     private final static Logger logback = LoggerFactory.getLogger(DirectController.class);
     private final IRobot robot;
     private final GameGUI gameGUI;
-    private final CmdRobot cmdRobot;
+    private final CommandRobot commandRobot;
 
     public DirectController(final IRobot robot) {
         this.robot = robot;
         this.gameGUI = new GameGUI();
-        this.cmdRobot = new CmdRobot(robot);
+        this.commandRobot = new CommandRobot(robot);
     }
 
     public static void main(final String[] args) throws Exception {
@@ -42,10 +36,10 @@ public class DirectController {
 
     private void start() {
         robot.connect();
-        gameGUI.addKeyListener(new DirectControlKeyAdapter(getCmdRobot()));
+        gameGUI.addKeyListener(new DirectControlKeyAdapter(getCommandRobot()));
     }
 
-    private CmdRobot getCmdRobot() {
-        return cmdRobot;
+    private CommandRobot getCommandRobot() {
+        return commandRobot;
     }
 }

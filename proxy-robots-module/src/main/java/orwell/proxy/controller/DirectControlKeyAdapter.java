@@ -7,24 +7,24 @@ import java.awt.event.KeyEvent;
  * Created by Michaël Ludmann on 6/22/15.
  */
 public class DirectControlKeyAdapter extends KeyAdapter {
-    private final CmdRobot cmdRobot;
+    private final CommandRobot commandRobot;
 
-    public DirectControlKeyAdapter(final CmdRobot cmdRobot) {
-        this.cmdRobot = cmdRobot;
+    public DirectControlKeyAdapter(final CommandRobot commandRobot) {
+        this.commandRobot = commandRobot;
     }
 
     @Override
     public void keyTyped(final KeyEvent e) {
-        cmdRobot.commandTyped(e.getKeyChar());
+        commandRobot.commandTyped(e.getKeyChar());
     }
 
     @Override
     public void keyPressed(final KeyEvent e) {
-        cmdRobot.commandPressed(e.getKeyChar());
+        commandRobot.commandPressed(e.getKeyChar());
     }
 
     @Override
     public void keyReleased(final KeyEvent e) {
-        cmdRobot.commandReleased(e.getKeyChar());
+        commandRobot.commandReleased(e.getKeyChar());
     }
 }

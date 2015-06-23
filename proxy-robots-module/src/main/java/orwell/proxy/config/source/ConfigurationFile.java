@@ -32,10 +32,9 @@ public class ConfigurationFile extends Configuration {
     }
 
     @Override
-    protected void populateFromSource(ConfigModel configModel) throws JAXBException {
+    protected void populateFromSource() throws JAXBException {
         final File file = new File(filePath);
-        configModel = (ConfigModel) unmarshaller.unmarshal(file);
-        setIsPopulated(true);
+        setConfigModel((ConfigModel) unmarshaller.unmarshal(file));
         logback.info("Configuration loaded from external file: " + filePath);
     }
 }

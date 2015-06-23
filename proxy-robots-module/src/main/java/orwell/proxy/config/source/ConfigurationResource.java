@@ -23,7 +23,7 @@ public class ConfigurationResource extends Configuration {
     }
 
     @Override
-    protected void populateFromSource(ConfigModel configModel) throws JAXBException {
+    protected void populateFromSource() throws JAXBException {
         InputStream xml = getClass().getResourceAsStream(filePath);
         if (null == xml) {
             logback.info("Configuration " + filePath + " not found in Jar." +
@@ -33,16 +33,14 @@ public class ConfigurationResource extends Configuration {
             if (null == xml) {
                 logback.error("Failed to find default configuration file: " +
                         DEFAULT_CONFIG_FILEPATH_INSIDE_JAR);
-                setIsPopulated(false);
-                configModel = null;
+                setConfigModel(null);
                 return;
             } else {
                 logback.info("Configuration found in default resource file: " +
                         DEFAULT_CONFIG_FILEPATH_INSIDE_JAR);
             }
         }
-        configModel = (ConfigModel) unmarshaller.unmarshal(xml);
-        setIsPopulated(true);
+        setConfigModel((ConfigModel) unmarshaller.unmarshal(xml));
         logback.info("Configuration loaded");
     }
 }

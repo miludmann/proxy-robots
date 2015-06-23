@@ -17,6 +17,7 @@ import javax.xml.bind.JAXBException;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 /**
@@ -42,13 +43,14 @@ public class RobotFactoryTest {
 
     @Test
     public void testGetLegoTank_NullConfigCamera() throws Exception {
-        final LegoTank legoTank = (LegoTank) robotFactory.getRobot(new ConfigTank());
+        final LegoTank legoTank = (LegoTank) RobotFactory.getRobot(new ConfigTank());
+        assertNotNull(IPWebcam.getDummy());
         assertEquals(IPWebcam.getDummy().getUrl(), legoTank.getCameraUrl());
     }
 
     @Test
     public void testGetLegoTank_NullParameter() throws Exception {
-        final LegoTank legoTank = (LegoTank) robotFactory.getRobot(null);
+        final LegoTank legoTank = (LegoTank) RobotFactory.getRobot(null);
         assertNull(legoTank);
     }
 
@@ -69,7 +71,7 @@ public class RobotFactoryTest {
         configTank.setCamera(configCamera);
 
         // Build a tank from the config
-        final LegoTank legoTank = (LegoTank) robotFactory.getRobot(configTank);
+        final LegoTank legoTank = (LegoTank) RobotFactory.getRobot(configTank);
         assertEquals(IMAGE_TEST, legoTank.getImage());
         assertEquals("http://" + IP_TEST + ":" + PORT_TEST, legoTank.getCameraUrl());
     }
@@ -100,10 +102,15 @@ public class RobotFactoryTest {
 
         final ConfigurationTest configurationTest = new ConfigurationTest(configModel);
 
-        // Build a tank from the config
-        final LegoTank legoTank = (LegoTank) robotFactory.getRobot(configurationTest, TEMP_ROUTING_ID_TEST);
+        // Build a tank from the config with existing ID
+        final LegoTank legoTank = (LegoTank) RobotFactory.getRobot(configurationTest, TEMP_ROUTING_ID_TEST);
+        assertNotNull(legoTank);
         assertEquals(IMAGE_TEST, legoTank.getImage());
         assertEquals("http://" + IP_TEST + ":" + PORT_TEST, legoTank.getCameraUrl());
+
+        // Build a tank from the config with a bad ID
+        final LegoTank legoTankNull = (LegoTank) RobotFactory.getRobot(configurationTest, "");
+        assertNull(legoTankNull);
     }
 
     @After
@@ -112,14 +119,14 @@ public class RobotFactoryTest {
     }
 
     private class ConfigurationTest extends Configuration {
-        ConfigModel configModel;
+        final ConfigModel configModel;
 
         public ConfigurationTest(final ConfigModel configModel) {
             this.configModel = configModel;
         }
 
         @Override
-        protected void populateFromSource(ConfigModel configModel) throws JAXBException {
+        protected void populateFromSource() throws JAXBException {
         }
 
         public ConfigModel getConfigModel() {

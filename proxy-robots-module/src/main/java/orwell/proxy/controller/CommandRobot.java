@@ -10,13 +10,21 @@ import orwell.proxy.robot.RobotInputSetVisitor;
 /**
  * Created by Michaël Ludmann on 21/06/15.
  */
-public class CmdRobot {
-    private final static Logger logback = LoggerFactory.getLogger(CmdRobot.class);
-    private final static int DEFAULT_SPEED = 75;
+public class CommandRobot {
+    public final static int DEFAULT_SPEED = 75;
+    public static final char CHAR_FORWARD = 'w';
+    public static final char CHAR_BACKWARD = 's';
+    public static final char CHAR_LEFT = 'a';
+    public static final char CHAR_RIGHT = 'd';
+    public static final char CHAR_DECREASE_SPEED = '-';
+    public static final char CHAR_INCREASE_SPEED = '+';
+    public static final char CHAR_FIRE_WEAPON1 = '1';
+    public static final char CHAR_FIRE_WEAPON2 = '2';
+    private final static Logger logback = LoggerFactory.getLogger(CommandRobot.class);
     private final IRobot robot;
     private int speed;
 
-    public CmdRobot(final IRobot robot) {
+    public CommandRobot(final IRobot robot) {
         this.robot = robot;
         this.speed = DEFAULT_SPEED;
     }
@@ -44,28 +52,28 @@ public class CmdRobot {
             return;
 
         switch (keyChar) {
-            case 'w':
+            case CHAR_FORWARD:
                 goForward();
                 break;
-            case 's':
+            case CHAR_BACKWARD:
                 goBackward();
                 break;
-            case 'a':
+            case CHAR_LEFT:
                 goLeft();
                 break;
-            case 'd':
+            case CHAR_RIGHT:
                 goRight();
                 break;
-            case '-':
+            case CHAR_DECREASE_SPEED:
                 decreaseSpeed();
                 break;
-            case '+':
+            case CHAR_INCREASE_SPEED:
                 increaseSpeed();
                 break;
-            case '1':
+            case CHAR_FIRE_WEAPON1:
                 fireWeapon1();
                 break;
-            case '2':
+            case CHAR_FIRE_WEAPON2:
                 fireWeapon2();
                 break;
             default:
@@ -83,27 +91,27 @@ public class CmdRobot {
             return;
 
         switch (keyChar) {
-            case 'w':
+            case CHAR_FORWARD:
                 stop();
                 break;
-            case 's':
+            case CHAR_BACKWARD:
                 stop();
                 break;
-            case 'a':
+            case CHAR_LEFT:
                 stop();
                 break;
-            case 'd':
+            case CHAR_RIGHT:
                 stop();
                 break;
-            case '-':
+            case CHAR_DECREASE_SPEED:
                 stop();
                 break;
-            case '+':
+            case CHAR_INCREASE_SPEED:
                 stop();
                 break;
-            case '1':
+            case CHAR_FIRE_WEAPON1:
                 break;
-            case '2':
+            case CHAR_FIRE_WEAPON2:
                 break;
             default:
                 notHandled(keyChar);
@@ -177,5 +185,9 @@ public class CmdRobot {
         robot.accept(robotInputSetVisitor);
         logback.debug("Stopping");
 
+    }
+
+    public double getSpeed() {
+        return speed;
     }
 }

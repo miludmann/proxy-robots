@@ -17,7 +17,6 @@ public class InputMove implements IRobotInput {
     public void setMove(final Input.Move move) {
         this.move = move;
         this.hasMove = true;
-
     }
 
 
@@ -33,5 +32,9 @@ public class InputMove implements IRobotInput {
     public void sendUnitMessageTo(final IRobot robot) {
         // "input move leftMove rightMove"
         robot.sendUnitMessage(new UnitMessage(UnitMessageType.Command, MOVE_PAYLOAD_HEADER + move.getLeft() + " " + move.getRight()));
+    }
+
+    public Input.Move getMove() {
+        return move;
     }
 }
