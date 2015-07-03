@@ -38,7 +38,7 @@
             </camera>
             <image>Yellow hull -- TO BE BETTER CONFIGURED</image>
         </tank>
-        <tank tempRoutingID='BananaTwo' shouldRegister='0'>
+        <tank tempRoutingID='BananaTwo' shouldRegister='0' canDirectControl='1'>
             <bluetoothName>Cage</bluetoothName>
             <bluetoothID>777777777777</bluetoothID>
             <camera>

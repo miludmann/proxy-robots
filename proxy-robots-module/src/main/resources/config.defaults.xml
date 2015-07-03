@@ -16,7 +16,7 @@
         </server-game>
     </proxy>
     <robots>
-        <tank tempRoutingID='defaultId' shouldRegister='1'>
+        <tank tempRoutingID='defaultId' shouldRegister='1' canDirectControl='1'>
             <bluetoothName>DefaultName</bluetoothName>
             <bluetoothID>000000000000</bluetoothID>
             <camera>

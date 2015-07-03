@@ -13,6 +13,10 @@ public interface IConfigRobot {
 
     public void setShouldRegister(final boolean shouldRegister);
 
+    public boolean canDirectControl();
+
+    public void setCanDirectControl(final boolean canDirectControl);
+
     public String getImage();
 
     public void setImage(final String image);

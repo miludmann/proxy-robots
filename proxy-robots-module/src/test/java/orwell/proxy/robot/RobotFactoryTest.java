@@ -33,12 +33,10 @@ public class RobotFactoryTest {
     private static final String TEMP_ROUTING_ID_TEST = "TempRoutingIdTest";
     private static final String IP_TEST = "IpTest";
     private static final int PORT_TEST = 777;
-    private RobotFactory robotFactory;
 
     @Before
     public void setUp() {
         logback.debug(">>>>>>>>> IN");
-        robotFactory = new RobotFactory();
     }
 
     @Test

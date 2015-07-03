@@ -9,4 +9,6 @@ public interface IConfigRobots {
     IConfigRobot getConfigRobot(String tempRoutingID) throws Exception;
 
     ArrayList<IConfigRobot> getConfigRobotsToRegister();
+
+    ArrayList<IConfigRobot> getConfigRobotsToDirectControl();
 }

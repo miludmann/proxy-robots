@@ -64,4 +64,25 @@ public class ConfigRobots implements IConfigRobots {
         }
         return configRobotsToRegister;
     }
+
+    @Override
+    public ArrayList<IConfigRobot> getConfigRobotsToDirectControl() {
+        final ArrayList<IConfigRobot> configRobotsToDirectControl = new ArrayList<>();
+
+        if (null != configTanks) {
+            for (final ConfigTank configTank : configTanks) {
+                if (configTank.canDirectControl()) {
+                    configRobotsToDirectControl.add(configTank);
+                }
+            }
+        }
+        if (null != configScouts) {
+            for (final ConfigScout configScout : configScouts) {
+                if (configScout.canDirectControl()) {
+                    configRobotsToDirectControl.add(configScout);
+                }
+            }
+        }
+        return configRobotsToDirectControl;
+    }
 }

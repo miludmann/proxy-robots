@@ -10,6 +10,7 @@ public class ConfigScout implements IConfigRobot {
     private String tempRoutingID;
     private ConfigCamera camera;
     private boolean shouldRegister;
+    private boolean canDirectControl;
     private String image;
 
     @Override
@@ -32,6 +33,17 @@ public class ConfigScout implements IConfigRobot {
     @XmlAttribute
     public void setShouldRegister(final boolean shouldRegister) {
         this.shouldRegister = shouldRegister;
+    }
+
+    @Override
+    public boolean canDirectControl() {
+        return canDirectControl;
+    }
+
+    @Override
+    @XmlAttribute
+    public void setCanDirectControl(final boolean canDirectControl) {
+        this.canDirectControl = canDirectControl;
     }
 
     public ConfigCamera getConfigCamera() {

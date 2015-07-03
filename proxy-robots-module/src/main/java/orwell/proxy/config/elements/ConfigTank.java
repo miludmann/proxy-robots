@@ -12,6 +12,7 @@ public class ConfigTank implements IConfigRobot {
     private String bluetoothID;
     private ConfigCamera camera;
     private boolean shouldRegister;
+    private boolean canDirectControl;
     private String image;
 
     @Override
@@ -38,6 +39,17 @@ public class ConfigTank implements IConfigRobot {
 
     public String getBluetoothName() {
         return bluetoothName;
+    }
+
+    @Override
+    public boolean canDirectControl() {
+        return canDirectControl;
+    }
+
+    @Override
+    @XmlAttribute
+    public void setCanDirectControl(final boolean canDirectControl) {
+        this.canDirectControl = canDirectControl;
     }
 
     @XmlElement

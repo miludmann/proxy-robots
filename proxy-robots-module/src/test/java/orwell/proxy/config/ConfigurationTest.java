@@ -159,6 +159,15 @@ public class ConfigurationTest {
     }
 
     @Test
+    public void testRobotsToDirectControl() {
+        final ConfigRobots configRobots;
+        configRobots = getConfigurationResourceTest().getConfigModel()
+                .getConfigRobots();
+
+        assertEquals(1, configRobots.getConfigRobotsToDirectControl().size());
+    }
+
+    @Test
     public void testConfigurationFile_fail() throws FileNotFoundException, NotFileException {
         File file = null;
         try {
