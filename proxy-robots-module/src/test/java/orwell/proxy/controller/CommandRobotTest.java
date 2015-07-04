@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import orwell.proxy.mock.MockedTank;
 
+import java.awt.event.KeyEvent;
+
 import static org.junit.Assert.*;
 
 /**
@@ -31,7 +33,7 @@ public class CommandRobotTest {
     @Test
     public void testCommandTyped_Forward() throws Exception {
         assertFalse(mockedTank.getInputMove().hasMove());
-        commandRobot.commandTyped(CommandRobot.CHAR_FORWARD);
+        commandRobot.commandTyped(KeyEvent.VK_UP);
         assertTrue(mockedTank.getInputMove().hasMove());
         assertTrue(0 < mockedTank.getInputMove().getMove().getLeft());
         assertTrue(0 < mockedTank.getInputMove().getMove().getRight());
@@ -40,7 +42,7 @@ public class CommandRobotTest {
     @Test
     public void testCommandTyped_Backward() throws Exception {
         assertFalse(mockedTank.getInputMove().hasMove());
-        commandRobot.commandTyped(CommandRobot.CHAR_BACKWARD);
+        commandRobot.commandTyped(KeyEvent.VK_DOWN);
         assertTrue(mockedTank.getInputMove().hasMove());
         assertTrue(0 > mockedTank.getInputMove().getMove().getLeft());
         assertTrue(0 > mockedTank.getInputMove().getMove().getRight());
@@ -49,7 +51,7 @@ public class CommandRobotTest {
     @Test
     public void testCommandTyped_Left() throws Exception {
         assertFalse(mockedTank.getInputMove().hasMove());
-        commandRobot.commandTyped(CommandRobot.CHAR_LEFT);
+        commandRobot.commandTyped(KeyEvent.VK_LEFT);
         assertTrue(mockedTank.getInputMove().hasMove());
         assertEquals(0, mockedTank.getInputMove().getMove().getLeft(), 0);
         assertTrue(0 < mockedTank.getInputMove().getMove().getRight());
@@ -58,7 +60,7 @@ public class CommandRobotTest {
     @Test
     public void testCommandTyped_Right() throws Exception {
         assertFalse(mockedTank.getInputMove().hasMove());
-        commandRobot.commandTyped(CommandRobot.CHAR_RIGHT);
+        commandRobot.commandTyped(KeyEvent.VK_RIGHT);
         assertTrue(mockedTank.getInputMove().hasMove());
         assertTrue(0 < mockedTank.getInputMove().getMove().getLeft());
         assertEquals(0, mockedTank.getInputMove().getMove().getRight(), 0);
@@ -67,21 +69,21 @@ public class CommandRobotTest {
     @Test
     public void testCommandTyped_DecreaseSpeed() throws Exception {
         assertEquals(CommandRobot.DEFAULT_SPEED, commandRobot.getSpeed(), 1);
-        commandRobot.commandTyped(CommandRobot.CHAR_DECREASE_SPEED);
+        commandRobot.commandTyped(KeyEvent.VK_MINUS);
         assertEquals(CommandRobot.DEFAULT_SPEED - 1, commandRobot.getSpeed(), 1);
     }
 
     @Test
     public void testCommandTyped_IncreaseSpeed() throws Exception {
         assertEquals(CommandRobot.DEFAULT_SPEED, commandRobot.getSpeed(), 1);
-        commandRobot.commandTyped(CommandRobot.CHAR_INCREASE_SPEED);
+        commandRobot.commandTyped(KeyEvent.VK_PLUS);
         assertEquals(CommandRobot.DEFAULT_SPEED + 1, commandRobot.getSpeed(), 1);
     }
 
     @Test
     public void testCommandReleased_Stop() throws Exception {
         assertFalse(mockedTank.getInputMove().hasMove());
-        commandRobot.commandReleased(CommandRobot.CHAR_FORWARD);
+        commandRobot.commandReleased(KeyEvent.VK_UP);
         assertTrue(mockedTank.getInputMove().hasMove());
         assertEquals(0, mockedTank.getInputMove().getMove().getLeft(), 0);
         assertEquals(0, mockedTank.getInputMove().getMove().getRight(), 0);

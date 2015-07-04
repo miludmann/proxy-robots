@@ -7,22 +7,17 @@ import orwell.proxy.robot.EnumConnectionState;
 import orwell.proxy.robot.IRobot;
 import orwell.proxy.robot.RobotInputSetVisitor;
 
+import java.awt.event.KeyEvent;
+
 /**
  * Created by Michaël Ludmann on 21/06/15.
  */
 public class CommandRobot {
-    public final static int DEFAULT_SPEED = 75;
-    public static final char CHAR_FORWARD = 'w';
-    public static final char CHAR_BACKWARD = 's';
-    public static final char CHAR_LEFT = 'a';
-    public static final char CHAR_RIGHT = 'd';
-    public static final char CHAR_DECREASE_SPEED = '-';
-    public static final char CHAR_INCREASE_SPEED = '+';
-    public static final char CHAR_FIRE_WEAPON1 = '1';
-    public static final char CHAR_FIRE_WEAPON2 = '2';
+    public final static double DEFAULT_SPEED = 0.75;
     private final static Logger logback = LoggerFactory.getLogger(CommandRobot.class);
+    private static final double INCREMENTAL_SPEED_CHANGE = 0.01;
     private final IRobot robot;
-    private int speed;
+    private double speed;
 
     public CommandRobot(final IRobot robot) {
         this.robot = robot;
@@ -47,80 +42,102 @@ public class CommandRobot {
         return inputBuilder.build();
     }
 
-    public void commandTyped(final char keyChar) {
+    public void commandTyped(final int keyCode) {
+
+    }
+
+    public void commandPressed(final int keyCode) {
         if (EnumConnectionState.CONNECTED != robot.getConnectionState())
             return;
 
-        switch (keyChar) {
-            case CHAR_FORWARD:
+        switch (keyCode) {
+            case KeyEvent.VK_W:
+            case KeyEvent.VK_UP:
                 goForward();
                 break;
-            case CHAR_BACKWARD:
+            case KeyEvent.VK_S:
+            case KeyEvent.VK_DOWN:
                 goBackward();
                 break;
-            case CHAR_LEFT:
+            case KeyEvent.VK_A:
+            case KeyEvent.VK_LEFT:
                 goLeft();
                 break;
-            case CHAR_RIGHT:
+            case KeyEvent.VK_D:
+            case KeyEvent.VK_RIGHT:
                 goRight();
                 break;
-            case CHAR_DECREASE_SPEED:
+            case KeyEvent.VK_SUBTRACT:
+            case KeyEvent.VK_MINUS:
                 decreaseSpeed();
                 break;
-            case CHAR_INCREASE_SPEED:
+            case KeyEvent.VK_ADD:
+            case KeyEvent.VK_PLUS:
                 increaseSpeed();
                 break;
-            case CHAR_FIRE_WEAPON1:
+            case KeyEvent.VK_NUMPAD1:
+            case KeyEvent.VK_1:
                 fireWeapon1();
                 break;
-            case CHAR_FIRE_WEAPON2:
+            case KeyEvent.VK_NUMPAD2:
+            case KeyEvent.VK_2:
                 fireWeapon2();
                 break;
+            case KeyEvent.VK_SPACE:
+                stop();
+                break;
             default:
-                notHandled(keyChar);
+                notHandled(keyCode);
                 break;
         }
     }
 
-    public void commandPressed(final char keyChar) {
-        logback.debug("Command pressed not handled for key: " + keyChar);
-    }
-
-    public void commandReleased(final char keyChar) {
+    public void commandReleased(final int keyCode) {
         if (EnumConnectionState.CONNECTED != robot.getConnectionState())
             return;
 
-        switch (keyChar) {
-            case CHAR_FORWARD:
+        switch (keyCode) {
+            case KeyEvent.VK_W:
+            case KeyEvent.VK_UP:
                 stop();
                 break;
-            case CHAR_BACKWARD:
+            case KeyEvent.VK_S:
+            case KeyEvent.VK_DOWN:
                 stop();
                 break;
-            case CHAR_LEFT:
+            case KeyEvent.VK_A:
+            case KeyEvent.VK_LEFT:
                 stop();
                 break;
-            case CHAR_RIGHT:
+            case KeyEvent.VK_D:
+            case KeyEvent.VK_RIGHT:
                 stop();
                 break;
-            case CHAR_DECREASE_SPEED:
+            case KeyEvent.VK_SUBTRACT:
+            case KeyEvent.VK_MINUS:
                 stop();
                 break;
-            case CHAR_INCREASE_SPEED:
+            case KeyEvent.VK_ADD:
+            case KeyEvent.VK_PLUS:
                 stop();
                 break;
-            case CHAR_FIRE_WEAPON1:
+            case KeyEvent.VK_NUMPAD1:
+            case KeyEvent.VK_1:
                 break;
-            case CHAR_FIRE_WEAPON2:
+            case KeyEvent.VK_NUMPAD2:
+            case KeyEvent.VK_2:
+                break;
+            case KeyEvent.VK_SPACE:
+                stop();
                 break;
             default:
-                notHandled(keyChar);
+                notHandled(keyCode);
                 break;
         }
     }
 
-    private void notHandled(final char keyChar) {
-        logback.debug("Key not handled: " + keyChar);
+    private void notHandled(final int keyCode) {
+        logback.debug("Key not handled: " + keyCode);
     }
 
     private void fireWeapon2() {
@@ -138,15 +155,15 @@ public class CommandRobot {
     }
 
     private void increaseSpeed() {
-        if (100 > speed) {
-            speed++;
+        if (1 > speed) {
+            speed+=INCREMENTAL_SPEED_CHANGE;
             logback.debug("Increased Speed to: " + speed);
         }
     }
 
     private void decreaseSpeed() {
-        if (-100 < speed) {
-            speed--;
+        if (0 < speed) {
+            speed-=INCREMENTAL_SPEED_CHANGE;
             logback.debug("Decreased Speed to: " + speed);
         }
     }

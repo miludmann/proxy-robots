@@ -1,5 +1,7 @@
 package orwell.proxy;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -44,5 +46,13 @@ public final class Utils {
         if (1 != limit)
             list.add(Arrays.copyOfRange(input, blockStart, input.length));
         return list;
+    }
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }
