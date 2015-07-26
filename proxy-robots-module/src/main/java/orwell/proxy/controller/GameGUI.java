@@ -4,9 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 /**
  * Created by Michaël Ludmann on 6/18/15.
@@ -28,14 +25,6 @@ public class GameGUI extends JFrame {
         this.setSize(GUI_WIDTH, GUI_HEIGHT);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(true);
-
-        final WindowListener listener = new WindowAdapter() {
-            public void windowClosing(final WindowEvent w) {
-                logback.debug("Closing Window");
-            }
-        };
-
-        this.addWindowListener(listener);
         this.setVisible(true);
     }
 }

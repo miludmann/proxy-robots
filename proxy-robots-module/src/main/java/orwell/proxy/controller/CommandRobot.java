@@ -6,6 +6,7 @@ import orwell.messages.Controller;
 import orwell.proxy.robot.EnumConnectionState;
 import orwell.proxy.robot.IRobot;
 import orwell.proxy.robot.RobotInputSetVisitor;
+import orwell.proxy.robot.RobotStopMessage;
 
 import java.awt.event.KeyEvent;
 
@@ -197,11 +198,9 @@ public class CommandRobot {
     }
 
     private void stop() {
-        final Controller.Input input = getInput(0, 0, false, false);
-        final RobotInputSetVisitor robotInputSetVisitor = new RobotInputSetVisitor(input.toByteArray());
-        robot.accept(robotInputSetVisitor);
-        logback.debug("Stopping");
-
+        final RobotStopMessage robotStopMessage = new RobotStopMessage();
+        robotStopMessage.sendUnitMessageTo(robot);
+        logback.debug("Stopping tank");
     }
 
     public double getSpeed() {

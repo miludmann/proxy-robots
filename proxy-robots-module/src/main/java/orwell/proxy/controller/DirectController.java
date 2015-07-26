@@ -9,7 +9,11 @@ import orwell.proxy.config.elements.ConfigRobots;
 import orwell.proxy.config.elements.IConfigRobot;
 import orwell.proxy.robot.IRobot;
 import orwell.proxy.robot.RobotFactory;
+import orwell.proxy.robot.RobotStopProgramMessage;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 /**
@@ -57,6 +61,21 @@ public class DirectController {
     private void start() {
         robot.connect();
         gameGUI.addKeyListener(new DirectControlKeyAdapter(getCommandRobot()));
+
+        final WindowListener windowCloseListener = new WindowAdapter() {
+            public void windowClosing(final WindowEvent w) {
+                logback.debug("Closing Window");
+                stop();
+            }
+        };
+
+        gameGUI.addWindowListener(windowCloseListener);
+    }
+
+    private void stop() {
+        final RobotStopProgramMessage robotStopProgramMessage = new RobotStopProgramMessage();
+        robotStopProgramMessage.sendUnitMessageTo(robot);
+
     }
 
     private CommandRobot getCommandRobot() {
