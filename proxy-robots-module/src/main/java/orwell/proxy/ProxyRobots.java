@@ -2,11 +2,14 @@ package orwell.proxy;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import orwell.proxy.config.*;
+import orwell.proxy.config.ConfigFactory;
+import orwell.proxy.config.Configuration;
+import orwell.proxy.config.IConfigFactory;
 import orwell.proxy.config.elements.IConfigRobot;
 import orwell.proxy.config.elements.IConfigRobots;
 import orwell.proxy.config.elements.IConfigServerGame;
 import orwell.proxy.robot.*;
+import orwell.proxy.robot.messages.MessageInput;
 import orwell.proxy.udp.UdpBeaconFinder;
 import orwell.proxy.zmq.IZmqMessageBroker;
 import orwell.proxy.zmq.IZmqMessageListener;
@@ -177,9 +180,9 @@ public class ProxyRobots implements IZmqMessageListener {
         final String routingId = zmqMessageBOM.getRoutingId();
         if (robotsMap.isRobotRegistered(routingId)) {
             final IRobot targetedRobot = robotsMap.get(routingId);
-            final RobotInputSetVisitor inputSetVisitor = new RobotInputSetVisitor(zmqMessageBOM.getMessageBodyBytes());
-            targetedRobot.accept(inputSetVisitor);
-            logback.info("robotTargeted input : " + inputSetVisitor.inputToString(targetedRobot));
+            final MessageInput messageInput = new MessageInput(zmqMessageBOM.getMessageBodyBytes());
+            targetedRobot.accept(messageInput);
+            logback.info("robotTargeted input : " + messageInput.toString(targetedRobot));
         } else {
             logback.info("RoutingID " + routingId
                     + " is not an ID of a registered robot");
@@ -232,6 +235,9 @@ public class ProxyRobots implements IZmqMessageListener {
         }
     }
 
+    protected int getOutgoingMessageFiltered() {
+        return outgoingMessageFiltered;
+    }
 
     private class CommunicationService implements Runnable {
         public void run() {
@@ -270,9 +276,5 @@ public class ProxyRobots implements IZmqMessageListener {
                     !robotsMap.getConnectedRobots().isEmpty() &&
                     messageBroker.isConnectedToServer();
         }
-    }
-
-    protected int getOutgoingMessageFiltered() {
-        return outgoingMessageFiltered;
     }
 }

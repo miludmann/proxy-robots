@@ -357,10 +357,10 @@ public class ProxyRobotsTest {
         // Tank has for now no Input registered
         assertFalse(((MockedTank) myProxyRobots.robotsMap.
                 get(ProtobufTest.REGISTERED_ROUTING_ID)).
-                getInputFire().hasFire());
+                getRobotState().hasFire());
         assertFalse(((MockedTank) myProxyRobots.robotsMap.
                 get(ProtobufTest.REGISTERED_ROUTING_ID)).
-                getInputMove().hasMove());
+                getRobotState().hasMove());
 
         // Now simulate reception of a INPUT message
         myProxyRobots.receivedNewZmq(
@@ -371,10 +371,10 @@ public class ProxyRobotsTest {
         // Tank received the right Input correctly
         assertTrue(((MockedTank) myProxyRobots.robotsMap.
                 get(ProtobufTest.REGISTERED_ROUTING_ID)).
-                getInputFire().hasFire());
+                getRobotState().hasFire());
         assertTrue(((MockedTank) myProxyRobots.robotsMap.
                 get(ProtobufTest.REGISTERED_ROUTING_ID)).
-                getInputMove().hasMove());
+                getRobotState().hasMove());
     }
 
     @Test

@@ -42,7 +42,7 @@ public class DirectControlKeyAdapter extends KeyAdapter {
         // fires a keyReleased event with a keyDown event...)
         if (!keyDownMap.containsKey(e.getKeyCode())) {
             commandRobot.commandReleased(e.getKeyCode());
-        } else if ((keyDownMap.get(e.getKeyCode()) + KEY_RELEASED_TIME_DELAY) > e.getWhen()){
+        } else if ((keyDownMap.get(e.getKeyCode()) + KEY_RELEASED_TIME_DELAY) > e.getWhen()) {
             keyDownMap.remove(e.getKeyCode());
         } else {
             commandRobot.commandReleased(e.getKeyCode());

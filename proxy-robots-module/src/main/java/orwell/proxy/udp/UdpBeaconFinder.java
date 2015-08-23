@@ -35,6 +35,7 @@ public class UdpBeaconFinder {
     /**
      * Change number of attempts to find the UDP beacon server
      * Default value is set to 1
+     *
      * @param maxAttemptsNumber
      */
     public void setMaxAttemptsNumber(final int maxAttemptsNumber) {
@@ -65,7 +66,7 @@ public class UdpBeaconFinder {
         try {
             datagramSocket.setBroadcast(true);
             while (shouldTryToFindBeacon()) {
-                logback.info("Trying to find UDP beacon, attempt [" + new Integer(attemptsPerformed+1) + "]");
+                logback.info("Trying to find UDP beacon, attempt [" + new Integer(attemptsPerformed + 1) + "]");
                 // Broadcast the message over all the network interfaces
                 final Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
 

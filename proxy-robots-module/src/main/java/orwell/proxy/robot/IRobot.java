@@ -1,13 +1,14 @@
 package orwell.proxy.robot;
 
 import lejos.mf.common.UnitMessage;
+import orwell.proxy.robot.messages.IRobotMessage;
 
 import java.util.UUID;
 
 /**
  * Created by Michaël Ludmann on 5/18/15.
  */
-public abstract class IRobot implements IRobotElement, IRobotInput {
+public abstract class IRobot implements IRobotElement, IRobotMessage {
 
     private String routingId = UUID.randomUUID().toString();
     private String cameraUrl;
@@ -16,6 +17,7 @@ public abstract class IRobot implements IRobotElement, IRobotInput {
     private EnumRegistrationState registrationState = EnumRegistrationState.NOT_REGISTERED;
     private EnumConnectionState connectionState = EnumConnectionState.NOT_CONNECTED;
     private EnumRobotVictoryState victoryState = EnumRobotVictoryState.WAITING_FOR_START;
+    private RobotState robotState;
 
     public abstract void sendUnitMessage(UnitMessage unitMessage);
 
@@ -78,5 +80,13 @@ public abstract class IRobot implements IRobotElement, IRobotInput {
 
     protected void setVictoryState(final EnumRobotVictoryState victoryState) {
         this.victoryState = victoryState;
+    }
+
+    public RobotState getRobotState() {
+        return robotState;
+    }
+
+    public void setRobotState(RobotState robotState) {
+        this.robotState = robotState;
     }
 }

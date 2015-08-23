@@ -11,6 +11,7 @@ import org.junit.runners.JUnit4;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import orwell.proxy.ProtobufTest;
+import orwell.proxy.robot.messages.InputMove;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
@@ -28,19 +29,16 @@ public class InputMoveTest {
     @Before
     public void setUp() throws Exception {
         logback.debug(">>>>>>>>> IN");
-        inputMove = new InputMove();
+        inputMove = new InputMove(ProtobufTest.getTestInput().getMove());
     }
 
     @Test
     public void testSetMove() throws Exception {
-        inputMove.setMove(ProtobufTest.getTestInput().getMove());
         assertTrue(inputMove.hasMove());
     }
 
     @Test
     public void testSendUnitMessageTo() throws Exception {
-        inputMove.setMove(ProtobufTest.getTestInput().getMove());
-
         final LegoTank legoTank = createNiceMock(LegoTank.class);
         final Capture<UnitMessage> messageCapture = new Capture<>();
         legoTank.sendUnitMessage(capture(messageCapture));

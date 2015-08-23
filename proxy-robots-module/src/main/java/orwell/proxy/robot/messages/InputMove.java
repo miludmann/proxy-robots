@@ -1,35 +1,28 @@
-package orwell.proxy.robot;
+package orwell.proxy.robot.messages;
 
 import lejos.mf.common.UnitMessage;
 import lejos.mf.common.UnitMessageType;
 import orwell.messages.Controller.Input;
+import orwell.proxy.robot.IRobot;
 
 import static orwell.proxy.Utils.round;
 
 /**
  * Created by Michaël Ludmann on 5/18/15.
  */
-public class InputMove implements IRobotInput {
+public class InputMove {
 
     private final static String MOVE_PAYLOAD_HEADER = "move ";
     private final static int MAX_DECIMAL_LENGTH = 4;
     private Input.Move move;
     private boolean hasMove = false;
 
-
-    public void setMove(final Input.Move move) {
-        this.move = move;
-        this.hasMove = true;
+    public InputMove(Input.Move move) {
+        setMove(move);
     }
-
 
     public boolean hasMove() {
         return hasMove;
-    }
-
-    @Override
-    public void accept(final IRobotInputVisitor visitor) {
-        visitor.visit(this);
     }
 
     public void sendUnitMessageTo(final IRobot robot) {
@@ -39,7 +32,6 @@ public class InputMove implements IRobotInput {
     }
 
     /**
-     *
      * @param value
      * @return String of the input value no bigger than MAX_DECIMAL_LENGTH
      * example : MAX_DECIMAL_LENGTH = 4 && input = 0.8999999 -> return = "0.90"
@@ -50,5 +42,10 @@ public class InputMove implements IRobotInput {
 
     public Input.Move getMove() {
         return move;
+    }
+
+    public void setMove(final Input.Move move) {
+        this.move = move;
+        this.hasMove = true;
     }
 }

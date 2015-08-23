@@ -9,7 +9,8 @@ import orwell.proxy.config.elements.ConfigRobots;
 import orwell.proxy.config.elements.IConfigRobot;
 import orwell.proxy.robot.IRobot;
 import orwell.proxy.robot.RobotFactory;
-import orwell.proxy.robot.RobotStopProgramMessage;
+import orwell.proxy.robot.messages.IRobotMessageVisitor;
+import orwell.proxy.robot.messages.MessageStopProgram;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -73,8 +74,8 @@ public class DirectController {
     }
 
     private void stop() {
-        final RobotStopProgramMessage robotStopProgramMessage = new RobotStopProgramMessage();
-        robotStopProgramMessage.sendUnitMessageTo(robot);
+        final IRobotMessageVisitor robotMessage = new MessageStopProgram();
+        robot.accept(robotMessage);
 
     }
 

@@ -16,9 +16,7 @@ import orwell.proxy.config.elements.ConfigTank;
 import javax.xml.bind.JAXBException;
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
  * Created by Michaël Ludmann on 5/21/15.

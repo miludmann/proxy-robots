@@ -5,8 +5,9 @@ import org.slf4j.LoggerFactory;
 import orwell.messages.Controller;
 import orwell.proxy.robot.EnumConnectionState;
 import orwell.proxy.robot.IRobot;
-import orwell.proxy.robot.RobotInputSetVisitor;
-import orwell.proxy.robot.RobotStopMessage;
+import orwell.proxy.robot.messages.IRobotMessageVisitor;
+import orwell.proxy.robot.messages.MessageInput;
+import orwell.proxy.robot.messages.MessageStop;
 
 import java.awt.event.KeyEvent;
 
@@ -143,63 +144,63 @@ public class CommandRobot {
 
     private void fireWeapon2() {
         final Controller.Input input = getInput(0, 0, false, true);
-        final RobotInputSetVisitor robotInputSetVisitor = new RobotInputSetVisitor(input.toByteArray());
-        robot.accept(robotInputSetVisitor);
+        final IRobotMessageVisitor robotMessage = new MessageInput(input.toByteArray());
+        robot.accept(robotMessage);
         logback.debug("Firing weapon 2");
     }
 
     private void fireWeapon1() {
         final Controller.Input input = getInput(0, 0, true, false);
-        final RobotInputSetVisitor robotInputSetVisitor = new RobotInputSetVisitor(input.toByteArray());
-        robot.accept(robotInputSetVisitor);
+        final IRobotMessageVisitor robotMessage = new MessageInput(input.toByteArray());
+        robot.accept(robotMessage);
         logback.debug("Firing weapon 1");
     }
 
     private void increaseSpeed() {
         if (1 > speed) {
-            speed+=INCREMENTAL_SPEED_CHANGE;
+            speed += INCREMENTAL_SPEED_CHANGE;
             logback.debug("Increased Speed to: " + speed);
         }
     }
 
     private void decreaseSpeed() {
         if (0 < speed) {
-            speed-=INCREMENTAL_SPEED_CHANGE;
+            speed -= INCREMENTAL_SPEED_CHANGE;
             logback.debug("Decreased Speed to: " + speed);
         }
     }
 
     private void goRight() {
         final Controller.Input input = getInput(speed, 0, false, false);
-        final RobotInputSetVisitor robotInputSetVisitor = new RobotInputSetVisitor(input.toByteArray());
-        robot.accept(robotInputSetVisitor);
+        final IRobotMessageVisitor robotMessage = new MessageInput(input.toByteArray());
+        robot.accept(robotMessage);
         logback.debug("Going right");
     }
 
     private void goLeft() {
         final Controller.Input input = getInput(0, speed, false, false);
-        final RobotInputSetVisitor robotInputSetVisitor = new RobotInputSetVisitor(input.toByteArray());
-        robot.accept(robotInputSetVisitor);
+        final IRobotMessageVisitor robotMessage = new MessageInput(input.toByteArray());
+        robot.accept(robotMessage);
         logback.debug("Going left");
     }
 
     private void goBackward() {
         final Controller.Input input = getInput(-speed, -speed, false, false);
-        final RobotInputSetVisitor robotInputSetVisitor = new RobotInputSetVisitor(input.toByteArray());
-        robot.accept(robotInputSetVisitor);
+        final IRobotMessageVisitor robotMessage = new MessageInput(input.toByteArray());
+        robot.accept(robotMessage);
         logback.debug("Going backward");
     }
 
     private void goForward() {
         final Controller.Input input = getInput(speed, speed, false, false);
-        final RobotInputSetVisitor robotInputSetVisitor = new RobotInputSetVisitor(input.toByteArray());
-        robot.accept(robotInputSetVisitor);
+        final IRobotMessageVisitor robotMessage = new MessageInput(input.toByteArray());
+        robot.accept(robotMessage);
         logback.debug("Going forward");
     }
 
     private void stop() {
-        final RobotStopMessage robotStopMessage = new RobotStopMessage();
-        robotStopMessage.sendUnitMessageTo(robot);
+        final IRobotMessageVisitor robotMessage = new MessageStop();
+        robot.accept(robotMessage);
         logback.debug("Stopping tank");
     }
 

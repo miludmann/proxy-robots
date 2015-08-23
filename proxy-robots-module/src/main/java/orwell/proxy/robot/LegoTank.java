@@ -7,12 +7,11 @@ import lejos.pc.comm.NXTCommFactory;
 import lejos.pc.comm.NXTInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import orwell.proxy.robot.messages.IRobotMessageVisitor;
 
 public class LegoTank extends IRobot implements MessageListenerInterface {
     private final static Logger logback = LoggerFactory.getLogger(LegoTank.class);
     private final IRobotElement[] robotElements;
-    private final IRobotInput[] robotActions;
     private final NXTInfo nxtInfo;
     private final MessageFramework messageFramework;
     private final UnitMessageBroker unitMessageBroker = new UnitMessageBroker(this);
@@ -22,12 +21,12 @@ public class LegoTank extends IRobot implements MessageListenerInterface {
                     final MessageFramework messageFramework,
                     final ICamera camera, final String image) {
         this.robotElements = new IRobotElement[]{camera, new RfidSensor(), new ColourSensor()};
-        this.robotActions = new IRobotInput[]{new InputMove(), new InputFire()};
         this.nxtInfo = new NXTInfo(NXTCommFactory.BLUETOOTH, bluetoothName, bluetoothId);
         this.messageFramework = messageFramework;
         messageFramework.addMessageListener(this);
         setImage(image);
         setCameraUrl(camera.getUrl());
+        setRobotState(new RobotState());
     }
 
     public LegoTank(final String bluetoothName, final String bluetoothId,
@@ -59,10 +58,7 @@ public class LegoTank extends IRobot implements MessageListenerInterface {
     }
 
     @Override
-    public void accept(final IRobotInputVisitor visitor) {
-        for (final IRobotInput action : robotActions) {
-            action.accept(visitor);
-        }
+    public void accept(final IRobotMessageVisitor visitor) {
         visitor.visit(this);
     }
 

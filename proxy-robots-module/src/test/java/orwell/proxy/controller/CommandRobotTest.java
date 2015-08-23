@@ -32,38 +32,38 @@ public class CommandRobotTest {
 
     @Test
     public void testCommandPressed_Forward() throws Exception {
-        assertFalse(mockedTank.getInputMove().hasMove());
+        assertFalse(mockedTank.getRobotState().hasMove());
         commandRobot.commandPressed(KeyEvent.VK_UP);
-        assertTrue(mockedTank.getInputMove().hasMove());
-        assertTrue(0 < mockedTank.getInputMove().getMove().getLeft());
-        assertTrue(0 < mockedTank.getInputMove().getMove().getRight());
+        assertTrue(mockedTank.getRobotState().hasMove());
+        assertTrue(0 < mockedTank.getRobotState().getMove().getMove().getLeft());
+        assertTrue(0 < mockedTank.getRobotState().getMove().getMove().getRight());
     }
 
     @Test
     public void testCommandPressed_Backward() throws Exception {
-        assertFalse(mockedTank.getInputMove().hasMove());
+        assertFalse(mockedTank.getRobotState().hasMove());
         commandRobot.commandPressed(KeyEvent.VK_DOWN);
-        assertTrue(mockedTank.getInputMove().hasMove());
-        assertTrue(0 > mockedTank.getInputMove().getMove().getLeft());
-        assertTrue(0 > mockedTank.getInputMove().getMove().getRight());
+        assertTrue(mockedTank.getRobotState().hasMove());
+        assertTrue(0 > mockedTank.getRobotState().getMove().getMove().getLeft());
+        assertTrue(0 > mockedTank.getRobotState().getMove().getMove().getRight());
     }
 
     @Test
     public void testCommandPressed_Left() throws Exception {
-        assertFalse(mockedTank.getInputMove().hasMove());
+        assertFalse(mockedTank.getRobotState().hasMove());
         commandRobot.commandPressed(KeyEvent.VK_LEFT);
-        assertTrue(mockedTank.getInputMove().hasMove());
-        assertEquals(0, mockedTank.getInputMove().getMove().getLeft(), 0);
-        assertTrue(0 < mockedTank.getInputMove().getMove().getRight());
+        assertTrue(mockedTank.getRobotState().hasMove());
+        assertEquals(0, mockedTank.getRobotState().getMove().getMove().getLeft(), 0);
+        assertTrue(0 < mockedTank.getRobotState().getMove().getMove().getRight());
     }
 
     @Test
     public void testCommandPressed_Right() throws Exception {
-        assertFalse(mockedTank.getInputMove().hasMove());
+        assertFalse(mockedTank.getRobotState().hasMove());
         commandRobot.commandPressed(KeyEvent.VK_RIGHT);
-        assertTrue(mockedTank.getInputMove().hasMove());
-        assertTrue(0 < mockedTank.getInputMove().getMove().getLeft());
-        assertEquals(0, mockedTank.getInputMove().getMove().getRight(), 0);
+        assertTrue(mockedTank.getRobotState().hasMove());
+        assertTrue(0 < mockedTank.getRobotState().getMove().getMove().getLeft());
+        assertEquals(0, mockedTank.getRobotState().getMove().getMove().getRight(), 0);
     }
 
     @Test
@@ -82,11 +82,9 @@ public class CommandRobotTest {
 
     @Test
     public void testCommandReleased_Stop() throws Exception {
-        assertFalse(mockedTank.getInputMove().hasMove());
+        assertFalse(mockedTank.getRobotState().hasStop());
         commandRobot.commandReleased(KeyEvent.VK_UP);
-        assertTrue(mockedTank.getInputMove().hasMove());
-        assertEquals(0, mockedTank.getInputMove().getMove().getLeft(), 0);
-        assertEquals(0, mockedTank.getInputMove().getMove().getRight(), 0);
+        assertTrue(mockedTank.getRobotState().hasStop());
     }
 
     @After

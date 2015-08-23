@@ -11,10 +11,11 @@ import org.junit.runners.JUnit4;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import orwell.proxy.ProtobufTest;
-import orwell.proxy.mock.MockedTank;
+import orwell.proxy.robot.messages.InputFire;
 
 import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Michaël Ludmann on 6/11/15.
@@ -28,19 +29,16 @@ public class InputFireTest {
     @Before
     public void setUp() throws Exception {
         logback.debug(">>>>>>>>> IN");
-        inputFire = new InputFire();
+        inputFire = new InputFire(ProtobufTest.getTestInput().getFire());
     }
 
     @Test
     public void testSetFire() throws Exception {
-        inputFire.setFire(ProtobufTest.getTestInput().getFire());
         assertTrue(inputFire.hasFire());
     }
 
     @Test
     public void testSendUnitMessageTo() throws Exception {
-        inputFire.setFire(ProtobufTest.getTestInput().getFire());
-
         final LegoTank legoTank = createNiceMock(LegoTank.class);
         final Capture<UnitMessage> messageCapture = new Capture<>();
         legoTank.sendUnitMessage(capture(messageCapture));

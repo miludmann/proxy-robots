@@ -71,6 +71,12 @@ public class ProtobufTest {
         return inputBuilder.build();
     }
 
+    public static Controller.Input getEmptyTestInput() {
+        final Controller.Input.Builder inputBuilder = Controller.Input.newBuilder();
+
+        return inputBuilder.build();
+    }
+
     public static boolean checkTestInputValid(final Controller.Input input) {
         assertTrue("Input should be initialized", input.isInitialized());
 

@@ -18,9 +18,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Tests for {@link ZmqMessageBOM}.
@@ -141,6 +139,7 @@ public class ZmqMessageBOMTest {
 
     /**
      * Test required to check integrity of decoded protobuf
+     *
      * @throws Exception
      */
     @Test

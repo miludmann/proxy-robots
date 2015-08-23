@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import orwell.proxy.ProtobufTest;
 import orwell.proxy.mock.MockedCamera;
+import orwell.proxy.robot.messages.MessageInput;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
@@ -150,25 +151,21 @@ public class LegoTankTest {
     }
 
     @Test
-    public void testAccept_inputVisitor_mock() {
+    public void testAccept_messageInput_mock() {
         // Simple test with mock visitor
-        final RobotInputSetVisitor inputVisitor = createNiceMock(RobotInputSetVisitor.class);
+        final MessageInput messageInput = createNiceMock(MessageInput.class);
 
         // Preparation of the mock input visitor
-        // We check that we visit all sensors and the tank itself
-        inputVisitor.visit((InputFire) anyObject());
+        // We check that we visit the tank itself
+        messageInput.visit(tank);
         expectLastCall().once();
-        inputVisitor.visit((InputMove) anyObject());
-        expectLastCall().once();
-        inputVisitor.visit(tank);
-        expectLastCall().once();
-        replay(inputVisitor);
+        replay(messageInput);
 
         // Real call
-        tank.accept(inputVisitor);
+        tank.accept(messageInput);
 
         // Check
-        verify(inputVisitor);
+        verify(messageInput);
     }
 
     @Test
@@ -183,8 +180,8 @@ public class LegoTankTest {
 
         // Check with a concrete visitor
         // this is more of an integration test than a unit test
-        final RobotInputSetVisitor inputSetVisitor = new RobotInputSetVisitor(ProtobufTest.getTestInput().toByteArray());
-        tank.accept(inputSetVisitor);
+        final MessageInput messageInput = new MessageInput(ProtobufTest.getTestInput().toByteArray());
+        tank.accept(messageInput);
         verify(messageFramework);
         assertEquals(UnitMessageType.Command, messageCapture.getValue().getMsgType());
         assertEquals(INPUT_MOVE, messageCapture.getValue().getPayload());

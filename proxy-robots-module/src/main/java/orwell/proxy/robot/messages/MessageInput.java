@@ -1,30 +1,57 @@
-package orwell.proxy.robot;
+package orwell.proxy.robot.messages;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import orwell.messages.Controller;
-
+import orwell.proxy.robot.IRobot;
+import orwell.proxy.robot.RobotState;
 
 /**
- * Created by Michaël Ludmann on 5/12/15.
+ * Created by Michaël Ludmann on 23/08/15.
  */
-public class RobotInputSetVisitor implements IRobotInputVisitor {
-    private final static Logger logback = LoggerFactory.getLogger(RobotInputSetVisitor.class);
+public class MessageInput implements IRobotMessageVisitor {
+    private final static Logger logback = LoggerFactory.getLogger(MessageInput.class);
     private Controller.Input input;
     private InputMove inputMove;
     private InputFire inputFire;
 
-    public RobotInputSetVisitor(final byte[] inputMessage) {
+    public MessageInput(final byte[] inputMessage) {
 
         try {
             input = Controller.Input.parseFrom(inputMessage);
         } catch (final InvalidProtocolBufferException e) {
             logback.info("RobotActionSet protobuf exception: " + e.getMessage());
         }
+        setMove();
+        setFire();
     }
 
-    public String inputToString(final IRobot robot) {
+    public MessageInput(final InputMove inputMove) {
+
+        this.inputMove = inputMove;
+    }
+
+    public MessageInput(final InputFire inputFire) {
+
+        this.inputFire = inputFire;
+    }
+
+    public void setMove() {
+
+        if (null != input && input.hasMove()) {
+            this.inputMove = new InputMove(input.getMove());
+        }
+    }
+
+    public void setFire() {
+
+        if (!isFireEmpty(input)) {
+            this.inputFire = new InputFire(input.getFire());
+        }
+    }
+
+    public String toString(final IRobot robot) {
         final String string;
         if (null != input) {
             string = "Controller INPUT of Robot [" + robot.getRoutingId() + "]:"
@@ -43,51 +70,31 @@ public class RobotInputSetVisitor implements IRobotInputVisitor {
         return string;
     }
 
-    @Override
-    public void visit(final InputMove inputMove) {
-
-        if (null == inputMove) {
-            logback.warn("Empty inputMove");
-            return;
-        }
-        this.inputMove = inputMove;
-        if (null != input && input.hasMove()) {
-            this.inputMove.setMove(input.getMove());
-        }
-    }
-
-    @Override
-    public void visit(final InputFire inputFire) {
-
-        if (null == inputFire) {
-            logback.warn("Empty inputFire");
-            return;
-        }
-        this.inputFire = inputFire;
-        if (!isEmpty(input)) {
-            this.inputFire.setFire(input.getFire());
-        }
-    }
-
     /**
      * @param input
-     * @return true is there is no relevant data inside input
+     * @return true is there is no relevant data inside input Fire
      * (meaning it is not worth sending it to the robot)
      */
-    private boolean isEmpty(final Controller.Input input) {
+    private boolean isFireEmpty(final Controller.Input input) {
         return (null == input) ||
                 !(input.hasFire() &&
-                (input.getFire().getWeapon1() || input.getFire().getWeapon2()));
+                        (input.getFire().getWeapon1() || input.getFire().getWeapon2()));
     }
 
     @Override
     public void visit(final IRobot robot) {
+        RobotState robotState = new RobotState();
 
         if (null != this.inputMove && this.inputMove.hasMove()) {
             inputMove.sendUnitMessageTo(robot);
+            robotState.setMove(inputMove);
         }
+
         if (null != this.inputFire && this.inputFire.hasFire()) {
             inputFire.sendUnitMessageTo(robot);
+            robotState.setFire(inputFire);
         }
+
+        robot.setRobotState(robotState);
     }
 }

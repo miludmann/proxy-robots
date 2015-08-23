@@ -1,17 +1,22 @@
-package orwell.proxy.robot;
+package orwell.proxy.robot.messages;
 
 import lejos.mf.common.UnitMessage;
 import lejos.mf.common.UnitMessageType;
 import orwell.messages.Controller;
+import orwell.proxy.robot.IRobot;
 
 /**
  * Created by Michaël Ludmann on 5/18/15.
  */
-public class InputFire implements IRobotInput {
+public class InputFire {
 
     private final static String FIRE_PAYLOAD_HEADER = "fire ";
     private Controller.Input.Fire fire;
     private boolean hasFire = false;
+
+    public InputFire(Controller.Input.Fire fire) {
+        setFire(fire);
+    }
 
     public void setFire(final Controller.Input.Fire fire) {
         this.fire = fire;
@@ -20,11 +25,6 @@ public class InputFire implements IRobotInput {
 
     public boolean hasFire() {
         return hasFire;
-    }
-
-    @Override
-    public void accept(final IRobotInputVisitor visitor) {
-        visitor.visit(this);
     }
 
     public void sendUnitMessageTo(final IRobot robot) {

@@ -41,6 +41,11 @@ public class ConfigTank implements IConfigRobot {
         return bluetoothName;
     }
 
+    @XmlElement
+    public void setBluetoothName(final String bluetoothName) {
+        this.bluetoothName = bluetoothName;
+    }
+
     @Override
     public boolean canDirectControl() {
         return canDirectControl;
@@ -50,11 +55,6 @@ public class ConfigTank implements IConfigRobot {
     @XmlAttribute
     public void setCanDirectControl(final boolean canDirectControl) {
         this.canDirectControl = canDirectControl;
-    }
-
-    @XmlElement
-    public void setBluetoothName(final String bluetoothName) {
-        this.bluetoothName = bluetoothName;
     }
 
     public String getBluetoothID() {
