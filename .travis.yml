@@ -1,9 +1,14 @@
-after_success: 
+sudo: false
+addons:
+  apt:
+    packages:
+    - libprotoc-dev
+    - protobuf-compiler
+after_success:
 - mvn clean cobertura:cobertura coveralls:report -q
 script: 
 before_install: 
 - git submodule update --init --recursive
-- sudo apt-get install -qq libprotoc-dev protobuf-compiler
 - wget -nc --no-check-certificate http://sourceforge.net/projects/lejos/files/lejos-NXJ/0.9.1beta/leJOS_NXJ_0.9.1beta-3.tar.gz/download -O ./leJOS_NXJ_0.9.1beta-3.tar.gz
 - tar -xvf leJOS_NXJ_0.9.1beta-3.tar.gz
 language: java
