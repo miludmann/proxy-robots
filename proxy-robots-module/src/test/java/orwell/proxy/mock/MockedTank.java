@@ -48,6 +48,11 @@ public class MockedTank extends IRobot {
     }
 
     @Override
+    public void accept(RobotGameStateVisitor visitor) {
+
+    }
+
+    @Override
     public void accept(final IRobotElementVisitor visitor) {
         for (final IRobotElement element : robotElements) {
             element.accept(visitor);

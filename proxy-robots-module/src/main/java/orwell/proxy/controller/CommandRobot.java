@@ -3,8 +3,10 @@ package orwell.proxy.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import orwell.messages.Controller;
+import orwell.proxy.EnumGameState;
 import orwell.proxy.robot.EnumConnectionState;
 import orwell.proxy.robot.IRobot;
+import orwell.proxy.robot.RobotGameStateVisitor;
 import orwell.proxy.robot.messages.IRobotMessageVisitor;
 import orwell.proxy.robot.messages.MessageInput;
 import orwell.proxy.robot.messages.MessageStop;
@@ -88,10 +90,37 @@ public class CommandRobot {
             case KeyEvent.VK_SPACE:
                 stop();
                 break;
+            case KeyEvent.VK_7:
+                victory();
+                break;
+            case KeyEvent.VK_8:
+                defeat();
+                break;
+            case KeyEvent.VK_9:
+                draw();
+                break;
             default:
                 notHandled(keyCode);
                 break;
         }
+    }
+
+    private void draw() {
+        final RobotGameStateVisitor robotGameStateVisitor = new RobotGameStateVisitor(EnumGameState.FINISHED, null);
+        robot.accept(robotGameStateVisitor);
+        logback.debug("Draw");
+    }
+
+    private void defeat() {
+        final RobotGameStateVisitor robotGameStateVisitor = new RobotGameStateVisitor(EnumGameState.FINISHED, "otherTeam");
+        robot.accept(robotGameStateVisitor);
+        logback.debug("Defeat");
+    }
+
+    private void victory() {
+        final RobotGameStateVisitor robotGameStateVisitor = new RobotGameStateVisitor(EnumGameState.FINISHED, robot.getTeamName());
+        robot.accept(robotGameStateVisitor);
+        logback.debug("Victory");
     }
 
     public void commandReleased(final int keyCode) {
@@ -130,6 +159,15 @@ public class CommandRobot {
             case KeyEvent.VK_2:
                 break;
             case KeyEvent.VK_SPACE:
+                stop();
+                break;
+            case KeyEvent.VK_7:
+                stop();
+                break;
+            case KeyEvent.VK_8:
+                stop();
+                break;
+            case KeyEvent.VK_9:
                 stop();
                 break;
             default:

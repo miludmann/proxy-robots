@@ -97,4 +97,9 @@ public class LegoTank extends IRobot implements MessageListenerInterface {
                 nxtInfo.deviceAddress + " [RoutingID] " + getRoutingId() +
                 " [TeamName] " + getTeamName() + " }";
     }
+
+    @Override
+    public void accept(final RobotGameStateVisitor visitor) {
+        visitor.visit(this);
+    }
 }

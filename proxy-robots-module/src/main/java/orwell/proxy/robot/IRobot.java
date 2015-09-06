@@ -89,4 +89,6 @@ public abstract class IRobot implements IRobotElement, IRobotMessage {
     public void setRobotState(RobotState robotState) {
         this.robotState = robotState;
     }
+
+    public abstract void accept(RobotGameStateVisitor visitor);
 }

@@ -2,12 +2,14 @@ package orwell.proxy.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import orwell.messages.ServerGame;
 import orwell.proxy.Cli;
 import orwell.proxy.config.ConfigModel;
 import orwell.proxy.config.Configuration;
 import orwell.proxy.config.elements.ConfigRobots;
 import orwell.proxy.config.elements.IConfigRobot;
 import orwell.proxy.robot.IRobot;
+import orwell.proxy.robot.Registered;
 import orwell.proxy.robot.RobotFactory;
 import orwell.proxy.robot.messages.IRobotMessageVisitor;
 import orwell.proxy.robot.messages.MessageStopProgram;
@@ -22,9 +24,12 @@ import java.util.ArrayList;
  */
 public class DirectController {
     private final static Logger logback = LoggerFactory.getLogger(DirectController.class);
+    public static final String REGISTERED_ROUTING_ID = "routingIdTest";
+    private static final String REGISTERED_TEAM_NAME = "BLUE";
     private final IRobot robot;
     private final GameGUI gameGUI;
     private final CommandRobot commandRobot;
+
 
     public DirectController(final IRobot robot) {
         this.robot = robot;
@@ -61,6 +66,9 @@ public class DirectController {
 
     private void start() {
         robot.connect();
+        Registered registered = new Registered(getRegisteredBytes());
+        registered.setToRobot(robot);
+
         gameGUI.addKeyListener(new DirectControlKeyAdapter(getCommandRobot()));
 
         final WindowListener windowCloseListener = new WindowAdapter() {
@@ -76,7 +84,14 @@ public class DirectController {
     private void stop() {
         final IRobotMessageVisitor robotMessage = new MessageStopProgram();
         robot.accept(robotMessage);
+    }
 
+    private byte[] getRegisteredBytes() {
+        final ServerGame.Registered.Builder registeredBuilder = ServerGame.Registered.newBuilder();
+        registeredBuilder.setRobotId(REGISTERED_ROUTING_ID);
+        registeredBuilder.setTeam(REGISTERED_TEAM_NAME);
+
+        return registeredBuilder.build().toByteArray();
     }
 
     private CommandRobot getCommandRobot() {
