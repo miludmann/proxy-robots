@@ -14,6 +14,7 @@ public class RobotGameStateVisitor {
     private final static String VICTORY_PAYLOAD_HEADER = "game vict";
     private final static String DEFEAT_PAYLOAD_HEADER = "game fail";
     private final static String DRAW_PAYLOAD_HEADER = "game draw";
+    private static final String WAIT_START_PAYLOAD_HEADER = "game start";
     private final String winningTeam;
     private final EnumGameState gameState;
 
@@ -80,6 +81,7 @@ public class RobotGameStateVisitor {
 
     private void setWaitingToStart(final IRobot robot) {
         robot.setVictoryState(EnumRobotVictoryState.WAITING_FOR_START);
+        robot.sendUnitMessage(new UnitMessage(UnitMessageType.Command, WAIT_START_PAYLOAD_HEADER));
         logback.info("Robot " + robot.getRoutingId() + " is waiting for the game to start");
     }
 

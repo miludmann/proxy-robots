@@ -42,6 +42,11 @@ public class MockedTank extends IRobot {
     }
 
     @Override
+    public void stopTank() {
+        logback.info("Stopping Tank");
+    }
+
+    @Override
     public void closeConnection() {
         logback.info("Closing connection to physical device");
         setConnectionState(EnumConnectionState.NOT_CONNECTED);

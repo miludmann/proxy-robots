@@ -23,6 +23,8 @@ public abstract class IRobot implements IRobotElement, IRobotMessage {
 
     public abstract EnumConnectionState connect();
 
+    public abstract void stopTank();
+
     public abstract void closeConnection();
 
 

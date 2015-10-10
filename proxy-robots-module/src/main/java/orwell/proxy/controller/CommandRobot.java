@@ -9,7 +9,7 @@ import orwell.proxy.robot.IRobot;
 import orwell.proxy.robot.RobotGameStateVisitor;
 import orwell.proxy.robot.messages.IRobotMessageVisitor;
 import orwell.proxy.robot.messages.MessageInput;
-import orwell.proxy.robot.messages.MessageStop;
+import orwell.proxy.robot.messages.MessageStopTank;
 
 import java.awt.event.KeyEvent;
 
@@ -88,7 +88,7 @@ public class CommandRobot {
                 fireWeapon2();
                 break;
             case KeyEvent.VK_SPACE:
-                stop();
+                stopTank();
                 break;
             case KeyEvent.VK_7:
                 victory();
@@ -130,27 +130,27 @@ public class CommandRobot {
         switch (keyCode) {
             case KeyEvent.VK_W:
             case KeyEvent.VK_UP:
-                stop();
+                stopTank();
                 break;
             case KeyEvent.VK_S:
             case KeyEvent.VK_DOWN:
-                stop();
+                stopTank();
                 break;
             case KeyEvent.VK_A:
             case KeyEvent.VK_LEFT:
-                stop();
+                stopTank();
                 break;
             case KeyEvent.VK_D:
             case KeyEvent.VK_RIGHT:
-                stop();
+                stopTank();
                 break;
             case KeyEvent.VK_SUBTRACT:
             case KeyEvent.VK_MINUS:
-                stop();
+                stopTank();
                 break;
             case KeyEvent.VK_ADD:
             case KeyEvent.VK_PLUS:
-                stop();
+                stopTank();
                 break;
             case KeyEvent.VK_NUMPAD1:
             case KeyEvent.VK_1:
@@ -159,16 +159,16 @@ public class CommandRobot {
             case KeyEvent.VK_2:
                 break;
             case KeyEvent.VK_SPACE:
-                stop();
+                stopTank();
                 break;
             case KeyEvent.VK_7:
-                stop();
+                stopTank();
                 break;
             case KeyEvent.VK_8:
-                stop();
+                stopTank();
                 break;
             case KeyEvent.VK_9:
-                stop();
+                stopTank();
                 break;
             default:
                 notHandled(keyCode);
@@ -236,8 +236,8 @@ public class CommandRobot {
         logback.debug("Going forward");
     }
 
-    private void stop() {
-        final IRobotMessageVisitor robotMessage = new MessageStop();
+    private void stopTank() {
+        final IRobotMessageVisitor robotMessage = new MessageStopTank();
         robot.accept(robotMessage);
         logback.debug("Stopping tank");
     }

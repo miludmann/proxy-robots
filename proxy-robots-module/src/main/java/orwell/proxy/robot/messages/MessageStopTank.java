@@ -8,7 +8,7 @@ import orwell.proxy.robot.RobotState;
 /**
  * Created by Michaël Ludmann on 23/08/15.
  */
-public class MessageStop implements IRobotMessageVisitor {
+public class MessageStopTank implements IRobotMessageVisitor {
     private final static String STOP_PAYLOAD_HEADER = "stop";
 
     @Override

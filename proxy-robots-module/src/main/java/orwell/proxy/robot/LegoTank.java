@@ -8,6 +8,7 @@ import lejos.pc.comm.NXTInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import orwell.proxy.robot.messages.IRobotMessageVisitor;
+import orwell.proxy.robot.messages.MessageStopTank;
 
 public class LegoTank extends IRobot implements MessageListenerInterface {
     private final static Logger logback = LoggerFactory.getLogger(LegoTank.class);
@@ -85,10 +86,18 @@ public class LegoTank extends IRobot implements MessageListenerInterface {
     }
 
     @Override
+    public void stopTank() {
+        logback.info("Stopping Tank");
+        this.accept(new MessageStopTank());
+    }
+
+    @Override
     public void closeConnection() {
+        this.stopTank(); // Better check that the tank is not moving anymore
         if (EnumConnectionState.CONNECTED == getConnectionState()) {
             messageFramework.close();
         }
+        this.setConnectionState(EnumConnectionState.NOT_CONNECTED);
     }
 
     @Override
